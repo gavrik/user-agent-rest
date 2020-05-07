@@ -8,7 +8,7 @@ import (
 	"github.com/ua-parser/uap-go/uaparser"
 )
 
-// UaParser -
+// UaParser - Return parsed UA string in JSON format
 func UaParser(c *gin.Context) {
 	parser := uaparser.NewFromSaved()
 	x, _ := ioutil.ReadAll(c.Request.Body)
