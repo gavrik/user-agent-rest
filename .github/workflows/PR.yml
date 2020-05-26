@@ -1,8 +1,6 @@
 name: Go
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -16,7 +14,7 @@ jobs:
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
       with:
-        go-version: ^1.13
+        go-version: ^1.14
       id: go
 
     - name: Check out code into the Go module directory
@@ -35,9 +33,3 @@ jobs:
 
     - name: Test
       run: go test -v .
-    
-    - name: Upload to artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: UA parser app
-        path: main
