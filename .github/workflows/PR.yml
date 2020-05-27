@@ -7,7 +7,7 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: Build REST User Agent Parser
     runs-on: ubuntu-latest
     steps:
 
