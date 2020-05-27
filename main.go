@@ -1,4 +1,4 @@
-package main
+package useragentrest
 
 import (
 	"io/ioutil"
@@ -16,8 +16,14 @@ func UaParser(c *gin.Context) {
 	c.JSON(http.StatusOK, client)
 }
 
-func main() {
+// SetupRouter - setup router Handlers
+func SetupRouter() *gin.Engine {
 	route := gin.Default()
 	route.POST("/ua", UaParser)
-	route.Run()
+	return route
+}
+
+func main() {
+	router := SetupRouter()
+	router.Run()
 }

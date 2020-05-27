@@ -2,12 +2,12 @@ name: Go
 
 on: 
   pull_request:
-    types: [opened]
+    types: [opened, edited, reopened, synchronize]
 
 jobs:
 
   build:
-    name: Build
+    name: Build REST User Agent Parser
     runs-on: ubuntu-latest
     steps:
 

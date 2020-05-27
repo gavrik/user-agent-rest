@@ -1,4 +1,4 @@
-module main
+module useragentrest
 
 go 1.14
 
