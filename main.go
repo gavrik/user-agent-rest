@@ -1,4 +1,4 @@
-package main
+package useragentrest
 
 import (
 	"io/ioutil"
