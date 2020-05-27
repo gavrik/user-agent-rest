@@ -2,7 +2,7 @@ name: Go
 
 on: 
   pull_request:
-    types: [opened]
+    types: [opened, edited, reopened, synchronize]
 
 jobs:
 
