@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   release:
-    types: [published, created, edited]
+    types: [published, edited]
 
 env:
   IMAGE_NAME: user-agent-rest
@@ -44,8 +44,8 @@ jobs:
       - name: Build
         run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -ldflags '-w -extldflags "-static"' -o user-agent-rest .
 
-      - name: Test
-        run: go test -v user-agent-rest
+#      - name: Test
+#        run: go test -v user-agent-rest
 
   build-image:
     name: Build Docker Image
