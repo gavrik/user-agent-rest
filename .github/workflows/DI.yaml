@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username ${{ secret.DOCKER_HUB_USER_NAME }} --password-stdin
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username ${{ secrets.DOCKER_HUB_USER_NAME }} --password-stdin
       
       - name: Push image
         run: |
