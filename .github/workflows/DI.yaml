@@ -6,6 +6,7 @@ on:
 
 env:
   IMAGE_NAME: user-agent-rest
+  SOURCE_TAG: ${{ jobs.build.steps.get_tag.outputs.SOURCE_TAG }}
 
 jobs:
 
@@ -21,8 +22,6 @@ jobs:
       - name: Print build variables
         run: |
           echo $SOURCE_TAG
-        env:
-          SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
