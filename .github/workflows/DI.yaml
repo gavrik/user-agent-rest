@@ -1,0 +1,71 @@
+name: Docker Image CI
+
+on:
+  release:
+    types: [published, created, edited]
+
+env:
+  IMAGE_NAME: user-agent-rest
+
+jobs:
+
+  build:
+    name: Build and pack rest user agent application
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Get the version
+        id: get_tag
+        run: echo ::set-output name=SOURCE_TAG::${GITHUB_REF/refs\/tags\//}
+      
+      - name: Print build variables
+        run: |
+          echo $SOURCE_TAG
+        env:
+          SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.14
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+              dep ensure
+          fi
+
+      - name: Build
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -ldflags '-w -extldflags "-static"' -o user-agent-rest .
+
+      - name: Test
+        run: go test -v user-agent-rest
+
+  build-image:
+    name: Build Docker Image
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:$SOURCE_TAG
+  
+  push-image:
+    name: Push image to Docker HUB
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username ${{ secret.DOCKER_HUB_USER_NAME }} --password-stdin
+      
+      - name: Push image
+        run: |
+          docker push $IMAGE_NAME:$SOURCE_TAG
