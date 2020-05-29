@@ -6,7 +6,7 @@ on:
 
 env:
   IMAGE_NAME: user-agent-rest
-  SOURCE_TAG: ${{ jobs.build.steps.get_tag.outputs.SOURCE_TAG }}
+  SOURCE_TAG: latest
 
 jobs:
 
@@ -22,6 +22,8 @@ jobs:
       - name: Print build variables
         run: |
           echo $SOURCE_TAG
+        env:
+          SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
@@ -52,6 +54,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Print build variables
+        run: |
+          echo $SOURCE_TAG
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME:$SOURCE_TAG
   
