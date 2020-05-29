@@ -22,7 +22,6 @@ jobs:
       - name: Print build variables
         run: |
           echo $SOURCE_TAG
-          echo $IMAGE_NAME
         env:
           SOURCE_TAG: ${{ steps.get_tag.outputs.SOURCE_TAG }}
 
@@ -50,11 +49,11 @@ jobs:
 #        run: go test -v user-agent-rest
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME:$SOURCE_TAG
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_HUB_USER_NAME }}/$IMAGE_NAME:$SOURCE_TAG
   
       - name: Log into registry
         run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login --username ${{ secrets.DOCKER_HUB_USER_NAME }} --password-stdin
       
       - name: Push image
         run: |
-          docker push $IMAGE_NAME:$SOURCE_TAG
+          docker push ${{ secrets.DOCKER_HUB_USER_NAME }}/$IMAGE_NAME:$SOURCE_TAG
