@@ -45,7 +45,9 @@ jobs:
           fi
 
       - name: Build
-        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -ldflags '-w -extldflags "-static"' -o user-agent-rest .
+        run: |
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -ldflags '-w -extldflags "-static"' -o $IMAGE_NAME .
+          chmod +x $IMAGE_NAME
 
 #      - name: Test
 #        run: go test -v user-agent-rest
